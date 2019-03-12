@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "html5-geolocation": "^2.0.0",
+    "node-geocoder": "^3.22.0",
     "openweather-apis": "^4.0.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",

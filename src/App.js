@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Weather from './components/Weather';
 import { resolve } from 'path';
-import geolocation from 'html5-geolocation';
+import geocoder from 'node-geocoder';
 
 class App extends Component {
 
@@ -15,20 +15,23 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+
+    let NodeGeocoder = require('node-geocoder');
+    let geocoder = NodeGeocoder();
+
+    geocoder.reverse({lat:45.767, lon:4.833})
+    .then(function(res) {
+      console.log(res);
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
+
+
     const weatherForecastDays = 5;
   }
 
   componentDidMount() {
-    
-    this.geo = geolocation();
-    this.geo.get(function(err, position) {
-      if (!err) {
-        console.log('Position is:', position);
-      } else {
-        console.log('Position unknown:', err.message);
-      }
-    });
-
     this.weather = require('openweather-apis');
     this.weather.setLang('en');
     this.weather.setZipCode(this.state.weather.location);
