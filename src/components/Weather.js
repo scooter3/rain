@@ -8,11 +8,12 @@ class Weather extends Component {
   // }
 
   render() {
-    const {location, currentWeather, forecast} = this.props.weather;
+    const {currentWeather, forecast} = this.props.weather;
+    const location = this.props.location;
     // debugger;
     return (
       <div className="Weather">
-        {currentWeather.name}
+        {location.city}, {location.zipcode}, {location.country}
         <br/>
         {currentWeather.weather[0].description}
         <br/>
