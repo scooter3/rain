@@ -7,14 +7,26 @@ import geocoder from "node-geocoder";
 
 class App extends Component {
   state = {};
+<<<<<<< HEAD
   //weatherForecastDays;
+=======
+>>>>>>> a1abfec4f055295351ec75cd5daa158402070715
 
   constructor(props) {
+    console.log("constructor");
     super(props);
+<<<<<<< HEAD
     this.weatherForecastDays = 5;
   }
 
   componentDidMount() {
+=======
+    const weatherForecastDays = 5;
+  }
+
+  componentDidMount() {
+    console.log("component did mount");
+>>>>>>> a1abfec4f055295351ec75cd5daa158402070715
     navigator.geolocation.getCurrentPosition(position => {
       this.getCityName(
         position.coords.latitude,
@@ -40,12 +52,18 @@ class App extends Component {
           });
         });
     
+<<<<<<< HEAD
         // fetch forecast data
         this.getForecast().then((response) => {
           this.setState({
             forecast: response
           });
         });
+=======
+        // this.getForecast().then((response) => {
+        //   this.state.weather.forecast = response;
+        // });
+>>>>>>> a1abfec4f055295351ec75cd5daa158402070715
       });
     });
 
@@ -93,7 +111,11 @@ class App extends Component {
     return geocoder
       .reverse({ lat: latitude, lon: longitude })
       .then(function(res) {
+<<<<<<< HEAD
         //console.log(res);
+=======
+        console.log(res);
+>>>>>>> a1abfec4f055295351ec75cd5daa158402070715
         return res;
       })
       .catch(function(err) {
@@ -111,10 +133,17 @@ class App extends Component {
   };
 
   render() {
+<<<<<<< HEAD
     if (this.state.weather && this.state.forecast) {
       return (
         <div className="App">
           <Weather weather={this.state.weather} location={this.state.location} forecast={this.state.forecast}/>
+=======
+    if (this.state.weather) {
+      return (
+        <div className="App">
+          <Weather weather={this.state.weather} location={this.state.location} />
+>>>>>>> a1abfec4f055295351ec75cd5daa158402070715
         </div>
       );
     }
