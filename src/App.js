@@ -7,15 +7,14 @@ import geocoder from "node-geocoder";
 
 class App extends Component {
   state = {};
+  //weatherForecastDays;
 
   constructor(props) {
-    console.log("constructor");
     super(props);
-    const weatherForecastDays = 5;
+    this.weatherForecastDays = 5;
   }
 
   componentDidMount() {
-    console.log("component did mount");
     navigator.geolocation.getCurrentPosition(position => {
       this.getCityName(
         position.coords.latitude,
@@ -41,9 +40,12 @@ class App extends Component {
           });
         });
     
-        // this.getForecast().then((response) => {
-        //   this.state.weather.forecast = response;
-        // });
+        // fetch forecast data
+        this.getForecast().then((response) => {
+          this.setState({
+            forecast: response
+          });
+        });
       });
     });
 
@@ -58,6 +60,7 @@ class App extends Component {
         if (err) {
           reject(err);
         }
+        console.log(JSONObj);
         resolve(JSONObj);
       });
     });
@@ -72,6 +75,7 @@ class App extends Component {
         if (err) {
           reject(err);
         }
+        console.log(JSONObj);
         resolve(JSONObj);
       });
     });
@@ -89,7 +93,7 @@ class App extends Component {
     return geocoder
       .reverse({ lat: latitude, lon: longitude })
       .then(function(res) {
-        console.log(res);
+        //console.log(res);
         return res;
       })
       .catch(function(err) {
@@ -107,10 +111,10 @@ class App extends Component {
   };
 
   render() {
-    if (this.state.weather) {
+    if (this.state.weather && this.state.forecast) {
       return (
         <div className="App">
-          <Weather weather={this.state.weather} location={this.state.location} />
+          <Weather weather={this.state.weather} location={this.state.location} forecast={this.state.forecast}/>
         </div>
       );
     }
