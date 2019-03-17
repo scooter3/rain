@@ -12,3 +12,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+#weather-icon {
+  margin: 0 auto;
+  width: 500px;
+}
