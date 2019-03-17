@@ -1,45 +1,47 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Skycons from '.././skycons';
+import {Skycons} from '.././skycons';
 
 class Weather extends Component {
 
-  // skycons = new Skycons({"color": "white"});
-
-  // constructor() {
-  //   super();
-    
-  // }
+  skycons = new Skycons({"color": "white"});
 
   getWeatherType(weatherCode) {
-    switch(weatherCode){
+    const x = weatherCode;
+    console.log("weather code: " + weatherCode);
+
+    switch(true){
       // thunderstorms
-      case (weatherCode >= 200 && weatherCode < 300):
-        return this.skycons.RAIN;
+      case (x >= 200 && x < 300):
+        return Skycons.RAIN;
       
       // drizzle
-      case(weatherCode >=300 && weatherCode < 400):
-        return this.skycons.RAIN;
+      case(x >=300 && x < 400):
+        return Skycons.RAIN;
 
       // rain
-      case(weatherCode >= 500 && weatherCode < 600):
-        return this.skycons.RAIN;
+      case(x >= 500 && x < 600):
+        return Skycons.RAIN;
 
-      case(weatherCode == 611 || weatherCode == 612):
-        return this.skycons.SLEET;
+      case(x == 611 || x == 612):
+        return Skycons.SLEET;
 
-      case(weatherCode >= 600 && weatherCode < 700):
-        return this.skycons.SNOW;
+      case(x >= 600 && x < 700):
+        return Skycons.SNOW;
       
-      case(weatherCode == 741):
-        return this.skycons.FOG;
+      case(x == 741):
+        return Skycons.FOG;
 
       // todo change to clear day or clear night
-      case(weatherCode == 800):
-        return this.skycons.CLEAR_DAY;
+      case(x == 800):
+        return Skycons.CLEAR_DAY;
       
-      case(weatherCode >= 801 && weatherCode < 900):
-        return this.skycons.CLOUDY;
+      case(x >= 801 && x < 900):
+        return Skycons.CLOUDY;
+
+      default:
+        alert("asdf");
+        return;
     }
   }
 
@@ -50,6 +52,10 @@ class Weather extends Component {
 
 
     const weatherIcon = this.getWeatherType(currentWeather.weather[0].id);
+
+    console.log(weatherIcon);
+
+
     this.skycons.add(document.getElementById("icon1"), weatherIcon);
     this.skycons.play();
 
