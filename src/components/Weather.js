@@ -8,7 +8,6 @@ class Weather extends Component {
 
   getWeatherType(weatherCode) {
     const x = weatherCode;
-    console.log("weather code: " + weatherCode);
 
     switch(true){
       // thunderstorms
@@ -23,17 +22,17 @@ class Weather extends Component {
       case(x >= 500 && x < 600):
         return Skycons.RAIN;
 
-      case(x == 611 || x == 612):
+      case(x === 611 || x === 612):
         return Skycons.SLEET;
 
       case(x >= 600 && x < 700):
         return Skycons.SNOW;
       
-      case(x == 741):
+      case(x === 741):
         return Skycons.FOG;
 
       // todo change to clear day or clear night
-      case(x == 800):
+      case(x === 800):
         return Skycons.CLEAR_DAY;
       
       case(x >= 801 && x < 900):
@@ -47,22 +46,20 @@ class Weather extends Component {
 
   render() {
     const {currentWeather} = this.props.weather;
-    const location = this.props.location;
+    //const location = this.props.location;
     const forecast = this.props.forecast;
-
-
     const weatherIcon = this.getWeatherType(currentWeather.weather[0].id);
 
-    console.log(weatherIcon);
+    //console.log("weather icon: " + weatherIcon);
 
-
-    this.skycons.add(document.getElementById("icon1"), weatherIcon);
+    this.skycons.set(document.getElementById("icon1"), weatherIcon);
     this.skycons.play();
 
     // debugger;
     //&deg;F
     return (
       <div className="Weather">
+        <h1>City: {currentWeather.name}</h1>
         <pre>{JSON.stringify(currentWeather, null, 2)}</pre>
         <br/>
         <br/>
@@ -76,7 +73,8 @@ class Weather extends Component {
 }
 
 Weather.propTypes = {
-  weather: PropTypes.object.isRequired
+  weather: PropTypes.object.isRequired,
+  forecast: PropTypes.object.isRequired
 }
 
 export default Weather;
