@@ -6,7 +6,7 @@ class Weather extends Component {
 
   skycons = new Skycons({"color": "white"});
 
-  getWeatherType(weatherCode, partOfDay) {
+  getWeatherType(weatherCode, partOfDay = 'morning') {
     const x = weatherCode;
 
     switch(true){
@@ -57,6 +57,13 @@ class Weather extends Component {
     this.skycons.set(document.getElementById("icon1"), weatherIcon);
     this.skycons.play();
 
+    let forecastIcons = [];
+    
+    forecast.list.forEach((element) => {
+      console.log((this.getWeatherType(element.weather[0].id)));
+      forecastIcons.push(this.getWeatherType(element.weather[0].id));
+    });
+    {this.skycons.add(document.getElementById("forecast" + index), forecast[index])}
     return (
       <div className="Weather">
         <h1>{location.city}, {location.administrativeLevels.level1short}</h1>
@@ -64,22 +71,26 @@ class Weather extends Component {
         <h2>{date.day}</h2>
         <h2>{date.full}</h2>
         <br/>
-        <ul>
+        <table id="forecastTable">
           {forecast.list.map(function(value, index) {
-            return <li>
-              High: {value.temp.max}<br/>
-              Low: {value.temp.min}<br/>
-              {value.weather[0].main}<br/><br/>
-            </li>
+            return (
+              <tr>
+                <td>{date.fiveDays[index]}</td>
+                <td>High: {value.temp.max}</td>
+                <td>Low: {value.temp.min}</td>
+                <td>{value.weather[0].main}</td>
+                <td><canvas width="50" height="50" id="forecast"></canvas></td>
+              </tr>
+            )
           })}
-        </ul>
-        <pre>{JSON.stringify(currentWeather, null, 2)}</pre>
+          </table>
+        {/* <pre>{JSON.stringify(currentWeather, null, 2)}</pre>
         <br/>
         <br/>
         <pre>{JSON.stringify(currentWeather.weather[0], null, 2)}</pre>
         <br/>
         <br/>
-        <pre>{JSON.stringify(forecast, null, 2)}</pre>
+        <pre>{JSON.stringify(forecast, null, 2)}</pre> */}
       </div>
     );
   }

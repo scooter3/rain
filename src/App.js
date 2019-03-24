@@ -57,11 +57,17 @@ class App extends Component {
    */
   getDate() {
     let moment = require("moment");
+    let fiveDays = [];
+    for(let i=1; i < 6; i++) {
+        fiveDays.push(moment().add(i, 'days').format("dddd"));
+    }
+
     this.setState({
       date: {
         day: moment().format("dddd"),
         full: moment().format("MMMM D, YYYY"),
-        part: this.getPartOfDay()
+        part: this.getPartOfDay(),
+        fiveDays: fiveDays
       }
     });
   }

@@ -15,5 +15,14 @@ code {
 
 #weather-icon {
   margin: 0 auto;
+  width: 128px;
+}
+
+#root {
+  margin: 0 auto;
+  width: 500px;
+}
+
+#forecastTable {
   width: 500px;
 }
