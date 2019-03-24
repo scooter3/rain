@@ -17,7 +17,7 @@ class Zip extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.updateWeather(this.zipCode);
+        this.props.updateAll(this.zipCode);
       }
 
     render() {

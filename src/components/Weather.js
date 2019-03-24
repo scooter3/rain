@@ -6,7 +6,7 @@ class Weather extends Component {
 
   skycons = new Skycons({"color": "white"});
 
-  getWeatherType(weatherCode) {
+  getWeatherType(weatherCode, partOfDay) {
     const x = weatherCode;
 
     switch(true){
@@ -31,42 +31,55 @@ class Weather extends Component {
       case(x === 741):
         return Skycons.FOG;
 
-      // todo change to clear day or clear night
-      case(x === 800):
+      case(x === 800 && (partOfDay === 'afternoon' || partOfDay === 'morning')):
         return Skycons.CLEAR_DAY;
+
+      case(x === 800 && partOfDay === 'evening'):
+        return Skycons.CLEAR_NIGHT;
       
       case(x >= 801 && x < 900):
         return Skycons.CLOUDY;
 
       default:
-        alert("asdf");
         return;
     }
   }
 
+  createForecast() {
+
+  }
+
   render() {
     const {currentWeather} = this.props.weather;
-    //const location = this.props.location;
-    const forecast = this.props.forecast;
-    const weatherIcon = this.getWeatherType(currentWeather.weather[0].id);
-
-    //console.log("weather icon: " + weatherIcon);
+    const {location, date, forecast} = this.props;
+    const weatherIcon = this.getWeatherType(currentWeather.weather[0].id, date.part);
 
     this.skycons.set(document.getElementById("icon1"), weatherIcon);
     this.skycons.play();
 
-    // debugger;
-    //&deg;F
     return (
       <div className="Weather">
-        <h1>City: {currentWeather.name}</h1>
+        <h1>{location.city}, {location.administrativeLevels.level1short}</h1>
+        <h1>{currentWeather.main.temp}&deg; F</h1>
+        <h2>{date.day}</h2>
+        <h2>{date.full}</h2>
+        <br/>
+        <ul>
+          {forecast.list.map(function(value, index) {
+            return <li>
+              High: {value.temp.max}<br/>
+              Low: {value.temp.min}<br/>
+              {value.weather[0].main}<br/><br/>
+            </li>
+          })}
+        </ul>
         <pre>{JSON.stringify(currentWeather, null, 2)}</pre>
         <br/>
         <br/>
         <pre>{JSON.stringify(currentWeather.weather[0], null, 2)}</pre>
         <br/>
         <br/>
-        <pre>{JSON.stringify(forecast, null, 2)};</pre>
+        <pre>{JSON.stringify(forecast, null, 2)}</pre>
       </div>
     );
   }
