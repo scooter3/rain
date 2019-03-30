@@ -4,7 +4,26 @@ import {Skycons} from '.././skycons';
 
 class Weather extends Component {
 
-  skycons = new Skycons({"color": "white"});
+  constructor(props) {
+    super(props);
+    this.forecastIcons = [];
+    this.skycons = new Skycons({"color": "white"});
+  }
+
+  componentDidMount() {
+    // Render main weather icon
+    const {currentWeather} = this.props.weather;
+    const {date} = this.props;
+    const weatherIcon = this.getWeatherType(currentWeather.weather[0].id, date.part);
+
+    this.skycons.set(document.getElementById("mainWeatherIcon"), weatherIcon);
+    this.skycons.play();
+
+    // Render forecast icons
+    for(let i=0; i < 5; i++) {
+      this.skycons.set(document.getElementById("forecast" + i), this.forecastIcons[i])
+    }
+  }
 
   getWeatherType(weatherCode, partOfDay = 'morning') {
     const x = weatherCode;
@@ -45,44 +64,36 @@ class Weather extends Component {
     }
   }
 
-  createForecast() {
-
-  }
-
   render() {
     const {currentWeather} = this.props.weather;
     const {location, date, forecast} = this.props;
-    const weatherIcon = this.getWeatherType(currentWeather.weather[0].id, date.part);
-
-    this.skycons.set(document.getElementById("icon1"), weatherIcon);
-    this.skycons.play();
-
-    let forecastIcons = [];
     
     forecast.list.forEach((element) => {
-      console.log((this.getWeatherType(element.weather[0].id)));
-      forecastIcons.push(this.getWeatherType(element.weather[0].id));
+      this.forecastIcons.push(this.getWeatherType(element.weather[0].id));
     });
-    {this.skycons.add(document.getElementById("forecast" + index), forecast[index])}
+    
     return (
       <div className="Weather">
+        <canvas id="mainWeatherIcon" width="128" height="128"></canvas>
         <h1>{location.city}, {location.administrativeLevels.level1short}</h1>
         <h1>{currentWeather.main.temp}&deg; F</h1>
         <h2>{date.day}</h2>
         <h2>{date.full}</h2>
         <br/>
         <table id="forecastTable">
+        <tbody>
           {forecast.list.map(function(value, index) {
             return (
-              <tr>
+              <tr key={index}>
                 <td>{date.fiveDays[index]}</td>
                 <td>High: {value.temp.max}</td>
                 <td>Low: {value.temp.min}</td>
                 <td>{value.weather[0].main}</td>
-                <td><canvas width="50" height="50" id="forecast"></canvas></td>
+                <td><canvas width="30" height="30" id={"forecast" + index}></canvas></td>
               </tr>
             )
           })}
+          </tbody>
           </table>
         {/* <pre>{JSON.stringify(currentWeather, null, 2)}</pre>
         <br/>

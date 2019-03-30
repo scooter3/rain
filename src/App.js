@@ -77,13 +77,34 @@ class App extends Component {
    * 
    */
   updateAll = (zipCode) => {
+    // update date
     this.getDate();
+
+    // update zip code
     this.setState({
       location:{
         zipcode: zipCode
       }
     });
 
+    let options = {
+      provider: "google",
+      apiKey: "AIzaSyAw1EtkHq0MX94gs2NKqGjxNCHpxyy5Pu0"
+    };
+
+    let NodeGeocoder = require("node-geocoder");
+    let geocoder = NodeGeocoder(options);
+
+    geocoder.geocode({'address':zipCode})
+    .then((result) => {
+      this.setState({
+        location: result[0]
+      })
+    }).catch((err) => {
+      console.log("ERROR: " + err);
+    });
+
+    // update weather
     this.weather.setZipCode(zipCode);
     this.getWeatherData().then(response =>{
       this.setState({
@@ -93,6 +114,7 @@ class App extends Component {
       })
     });
 
+    // update forecast
     this.getForecast().then((response) => {
       this.setState({
         forecast: response
@@ -128,7 +150,6 @@ class App extends Component {
         if (err) {
           reject(err);
         }
-        console.log(JSONObj);
         resolve(JSONObj);
       });
     });
@@ -150,7 +171,7 @@ class App extends Component {
     return geocoder
       .reverse({ lat: latitude, lon: longitude })
       .then(function(res) {
-        // console.log(res);
+        console.log("location:" + JSON.stringify(res, null, 2));
         return res;
       })
       .catch(function(err) {
@@ -197,7 +218,7 @@ class App extends Component {
     if (this.state.weather && this.state.forecast) {
       return (
         <div className="App">
-          <Zip updateAll={this.updateAll}></Zip>
+          {/* <Zip updateAll={this.updateAll}></Zip> */}
           <Weather weather={this.state.weather} location={this.state.location} forecast={this.state.forecast} date={this.state.date}/>
         </div>
       );

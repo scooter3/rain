@@ -25,8 +25,8 @@ class Zip extends Component {
         <div> 
             <form onSubmit={this.handleSubmit}>
                 <input type="text" id="zipCode" name="zipCode" required
-                minLength="5" maxLength="5" size="10" onChange={this.handleChange}></input>
-                <button type="submit" id="submitZip">Get Weather</button>
+                minLength="5" maxLength="5" size="10" placeholder="Zip Code" onChange={this.handleChange}></input>
+                <button type="submit" id="submitZip">Go!</button>
             </form>
         </div>
         );
