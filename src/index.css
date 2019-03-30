@@ -27,3 +27,7 @@ code {
 #forecastTable {
   width: 500px;
 }
+
+#forecastTable td {
+  text-align: left;
+}

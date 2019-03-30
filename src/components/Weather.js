@@ -86,8 +86,7 @@ class Weather extends Component {
             return (
               <tr key={index}>
                 <td>{date.fiveDays[index]}</td>
-                <td>High: {value.temp.max}</td>
-                <td>Low: {value.temp.min}</td>
+                <td>{Number.parseFloat(value.temp.max).toFixed(0)} | {Number.parseFloat(value.temp.min).toFixed(0)}</td>
                 <td>{value.weather[0].main}</td>
                 <td><canvas width="30" height="30" id={"forecast" + index}></canvas></td>
               </tr>
