@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {Skycons} from '.././skycons';
+import moment from 'moment';
 
 class Weather extends Component {
 
@@ -55,9 +56,16 @@ class Weather extends Component {
 
       case(x === 800 && partOfDay === 'evening'):
         return Skycons.CLEAR_NIGHT;
-      
-      case(x >= 801 && x < 900):
+
+      // check for 804 (overcast clouds) first because it has a unique icon
+      case(x === 804):
         return Skycons.CLOUDY;
+      
+      case((x >= 801 && x < 900) && (partOfDay === 'afternoon' || partOfDay === 'morning')):
+        return Skycons.PARTLY_CLOUDY_DAY;
+
+      case((x >= 801 && x < 900) && partOfDay === 'evening'):
+        return Skycons.PARTLY_CLOUDY_NIGHT;
 
       default:
         return;
@@ -67,6 +75,7 @@ class Weather extends Component {
   render() {
     const {currentWeather} = this.props.weather;
     const {location, date, forecast} = this.props;
+    let moment = require("moment");
     
     forecast.list.forEach((element) => {
       this.forecastIcons.push(this.getWeatherType(element.weather[0].id));
@@ -74,26 +83,53 @@ class Weather extends Component {
     
     return (
       <div className="Weather">
-        <canvas id="mainWeatherIcon" width="128" height="128"></canvas>
-        <h1>{location.city}, {location.administrativeLevels.level1short}</h1>
-        <h1>{currentWeather.main.temp}&deg; F</h1>
-        <h2>{date.day}</h2>
-        <h2>{date.full}</h2>
-        <br/>
-        <table id="forecastTable">
-        <tbody>
+
+        <div id="mainWeatherArea">
+
+          <div class="weatherColumn">
+            <div id="mainWeatherIconBox"><canvas id="mainWeatherIcon" width="128" height="128" title={currentWeather.weather[0].main}></canvas></div>
+          </div>
+
+          <div class="weatherColumn">
+            <div id="mainTemp">{Number.parseFloat(currentWeather.main.temp).toFixed(0)}&deg;</div>
+            <div id="highLow">
+              H {Number.parseFloat(currentWeather.main.temp_max).toFixed(0)}&deg; L {Number.parseFloat(currentWeather.main.temp_min).toFixed(0)}&deg;
+            </div>
+          </div>
+
+          <div class="weatherColumn">
+            <div id="info">
+              <div id="cityState">{location.city}, {location.administrativeLevels.level1short}</div>
+              <div id="date">{date.day} {date.full}</div>
+              <div id="time">as of {moment.unix(currentWeather.dt).format("h:mm A")}</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div id="weatherSpace"></div>
+
+        <div id="otherWeatherData">
+          <p>
+            Humidity: {currentWeather.main.humidity}% <br />
+            Pressure: {Number.parseFloat(currentWeather.main.pressure * 0.0145037738).toFixed(2)} in<br />
+            Wind Speed: {currentWeather.wind.speed} MPH <br />
+            Sun: {moment.unix(currentWeather.sys.sunrise).format("h:mm A")} | {moment.unix(currentWeather.sys.sunset).format("h:mm A")}
+          </p>
+        </div>
+
+
           {forecast.list.map(function(value, index) {
             return (
-              <tr key={index}>
-                <td>{date.fiveDays[index]}</td>
-                <td>{Number.parseFloat(value.temp.max).toFixed(0)} | {Number.parseFloat(value.temp.min).toFixed(0)}</td>
-                <td>{value.weather[0].main}</td>
-                <td><canvas width="30" height="30" id={"forecast" + index}></canvas></td>
-              </tr>
+              <div id="forecastTable">
+                <div class="forecastDay">{date.fiveDays[index]}</div>
+                <div class="forecastIcon"><canvas width="30" height="30" id={"forecast" + index} title={value.weather[0].main}></canvas></div>
+                <div class="forecastTemp">{Number.parseFloat(value.temp.max).toFixed(0)}&deg; | {Number.parseFloat(value.temp.min).toFixed(0)}&deg;</div>
+                {/* <div>{value.weather[0].main}</div> */}
+                
+              </div>
             )
           })}
-          </tbody>
-          </table>
         {/* <pre>{JSON.stringify(currentWeather, null, 2)}</pre>
         <br/>
         <br/>

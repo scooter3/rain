@@ -7,6 +7,9 @@ import { resolve } from "path";
 import geocoder from "node-geocoder";
 import moment from "moment";
 
+const DAY_FORMAT = "dddd";
+const DATE_FORMAT = "M/D/YYYY";
+
 class App extends Component {
   state = {};
   //weatherForecastDays;
@@ -34,6 +37,7 @@ class App extends Component {
         this.weather.setZipCode(this.state.location.zipcode);
         // fetch weather data
         this.getWeatherData().then(response => {
+          console.log(JSON.stringify(response, null, 2));
           this.setState({
             weather: {
               currentWeather: response
@@ -64,8 +68,8 @@ class App extends Component {
 
     this.setState({
       date: {
-        day: moment().format("dddd"),
-        full: moment().format("MMMM D, YYYY"),
+        day: moment().format(DAY_FORMAT),
+        full: moment().format(DATE_FORMAT),
         part: this.getPartOfDay(),
         fiveDays: fiveDays
       }
@@ -171,7 +175,7 @@ class App extends Component {
     return geocoder
       .reverse({ lat: latitude, lon: longitude })
       .then(function(res) {
-        console.log("location:" + JSON.stringify(res, null, 2));
+        // console.log("location:" + JSON.stringify(res, null, 2));
         return res;
       })
       .catch(function(err) {
