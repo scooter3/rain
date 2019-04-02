@@ -10,5 +10,4 @@ import Weather from './components/Weather'
 
 //const store = createStore(rootReducer);
 
-
 ReactDOM.render(<App />, document.getElementById("root"));

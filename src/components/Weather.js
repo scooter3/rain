@@ -103,21 +103,18 @@ class Weather extends Component {
               <div id="date">{date.day} {date.full}</div>
               <div id="time">as of {moment.unix(currentWeather.dt).format("h:mm A")}</div>
             </div>
+
+            <div id="otherWeatherData">
+              <p>
+                Humidity: {currentWeather.main.humidity}% <br />
+                Pressure: {Number.parseFloat(currentWeather.main.pressure * 0.0145037738).toFixed(2)} in<br />
+                Wind Speed: {currentWeather.wind.speed} MPH <br />
+                Sun: {moment.unix(currentWeather.sys.sunrise).format("h:mm A")} | {moment.unix(currentWeather.sys.sunset).format("h:mm A")}
+              </p>
+            </div>
           </div>
 
         </div>
-
-        <div id="weatherSpace"></div>
-
-        <div id="otherWeatherData">
-          <p>
-            Humidity: {currentWeather.main.humidity}% <br />
-            Pressure: {Number.parseFloat(currentWeather.main.pressure * 0.0145037738).toFixed(2)} in<br />
-            Wind Speed: {currentWeather.wind.speed} MPH <br />
-            Sun: {moment.unix(currentWeather.sys.sunrise).format("h:mm A")} | {moment.unix(currentWeather.sys.sunset).format("h:mm A")}
-          </p>
-        </div>
-
 
           {forecast.list.map(function(value, index) {
             return (

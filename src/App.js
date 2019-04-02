@@ -21,6 +21,7 @@ class App extends Component {
     this.weather.setLang("en");
     this.weather.setUnits("imperial");
     this.weather.setAPPID("023b7ae0c92a6c61615c20f4da6bd7bc");
+    document.body.style.backgroundImage = "url('images/day.jpg')";
   }
 
   componentDidMount() {
