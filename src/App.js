@@ -6,6 +6,7 @@ import Zip from "./components/Zip";
 import { resolve } from "path";
 import geocoder from "node-geocoder";
 import moment from "moment";
+import {config} from "./config.js";
 
 const DAY_FORMAT = "dddd";
 const DATE_FORMAT = "M/D/YYYY";
@@ -20,7 +21,7 @@ class App extends Component {
     this.weather = require("openweather-apis");
     this.weather.setLang("en");
     this.weather.setUnits("imperial");
-    this.weather.setAPPID("023b7ae0c92a6c61615c20f4da6bd7bc");
+    this.weather.setAPPID(config.openWeatherApiKey);
     document.body.style.backgroundImage = "url('images/day.jpg')";
   }
 
@@ -97,7 +98,7 @@ class App extends Component {
 
     let options = {
       provider: "google",
-      apiKey: "AIzaSyAw1EtkHq0MX94gs2NKqGjxNCHpxyy5Pu0"
+      apiKey: config.googleMapsApiKey
     };
 
     let NodeGeocoder = require("node-geocoder");
