@@ -44,6 +44,12 @@ code {
   padding: 0;
 }
 
+#description {
+  text-align: left;
+  text-transform: capitalize;
+  margin-bottom: 5px;
+}
+
 #highLow {
   /* width: 300px; */
   text-align: left;
