@@ -173,7 +173,7 @@ class App extends Component {
   getCityName = (latitude, longitude) => {
     let options = {
       provider: "google",
-      apiKey: "AIzaSyAw1EtkHq0MX94gs2NKqGjxNCHpxyy5Pu0"
+      apiKey: config.googleMapsApiKey
     };
 
     let NodeGeocoder = require("node-geocoder");
