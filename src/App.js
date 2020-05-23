@@ -3,53 +3,54 @@ import logo from "./logo.svg";
 import "./App.css";
 import Weather from "./components/Weather";
 import Zip from "./components/Zip";
-import { resolve } from "path";
 import geocoder from "node-geocoder";
 import moment from "moment";
-import {config} from "./config.js";
+import { config } from "./config.js";
 
 const DAY_FORMAT = "dddd";
 const DATE_FORMAT = "M/D/YYYY";
 
 class App extends Component {
+  weatherApi = require("openweather-apis");
+  weatherForecastDays = 5;
+
   state = {};
-  //weatherForecastDays;
 
   constructor(props) {
     super(props);
-    this.weatherForecastDays = 5;
-    this.weather = require("openweather-apis");
-    this.weather.setLang("en");
-    this.weather.setUnits("imperial");
-    this.weather.setAPPID(config.openWeatherApiKey);
-    document.body.style.backgroundImage = "url('images/day.jpg')";
+
+    this.weatherApi.setLang("en");
+    this.weatherApi.setUnits("imperial");
+    this.weatherApi.setAPPID(config.openWeatherApiKey);
+    //document.body.style.backgroundImage = "url('./images/rain.jpg')";
   }
 
   componentDidMount() {
     this.getDate();
-    navigator.geolocation.getCurrentPosition(position => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      // get the city name first
       this.getCityName(position.coords.latitude, position.coords.longitude)
-        .then(result => {
+        .then((result) => {
           this.setState({
-            location: result[0]
+            location: result[0],
           });
         })
         .then(() => {
-          this.weather.setZipCode(this.state.location.zipcode);
           // fetch weather data
-          this.getWeatherData().then(response => {
-            console.log(JSON.stringify(response, null, 2));
+          this.weatherApi.setZipCode(this.state.location.zipcode);
+
+          this.getWeatherData().then((response) => {
             this.setState({
               weather: {
-                currentWeather: response
-              }
+                currentWeather: response,
+              },
             });
           });
 
           // fetch forecast data
-          this.getForecast().then(response => {
+          this.getForecast().then((response) => {
             this.setState({
-              forecast: response
+              forecast: response,
             });
           });
         });
@@ -64,11 +65,7 @@ class App extends Component {
     let moment = require("moment");
     let fiveDays = [];
     for (let i = 1; i < 6; i++) {
-      fiveDays.push(
-        moment()
-          .add(i, "days")
-          .format("dddd")
-      );
+      fiveDays.push(moment().add(i, "days").format("dddd"));
     }
 
     this.setState({
@@ -76,8 +73,8 @@ class App extends Component {
         day: moment().format(DAY_FORMAT),
         full: moment().format(DATE_FORMAT),
         part: this.getPartOfDay(),
-        fiveDays: fiveDays
-      }
+        fiveDays: fiveDays,
+      },
     });
   }
 
@@ -85,20 +82,20 @@ class App extends Component {
    * Get new weather data for the given zip code.
    *
    */
-  updateAll = zipCode => {
+  updateAll = (zipCode) => {
     // update date
     this.getDate();
 
     // update zip code
     this.setState({
       location: {
-        zipcode: zipCode
-      }
+        zipcode: zipCode,
+      },
     });
 
     let options = {
       provider: "google",
-      apiKey: config.googleMapsApiKey
+      apiKey: config.googleMapsApiKey,
     };
 
     let NodeGeocoder = require("node-geocoder");
@@ -106,29 +103,29 @@ class App extends Component {
 
     geocoder
       .geocode({ address: zipCode })
-      .then(result => {
+      .then((result) => {
         this.setState({
-          location: result[0]
+          location: result[0],
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("ERROR: " + err);
       });
 
     // update weather
-    this.weather.setZipCode(zipCode);
-    this.getWeatherData().then(response => {
+    this.weatherApi.setZipCode(zipCode);
+    this.getWeatherData().then((response) => {
       this.setState({
         weather: {
-          currentWeather: response
-        }
+          currentWeather: response,
+        },
       });
     });
 
     // update forecast
-    this.getForecast().then(response => {
+    this.getForecast().then((response) => {
       this.setState({
-        forecast: response
+        forecast: response,
       });
     });
   };
@@ -138,11 +135,10 @@ class App extends Component {
    */
   getWeatherData = () => {
     return new Promise((resolve, reject) => {
-      this.weather.getAllWeather(function(err, JSONObj) {
+      this.weatherApi.getAllWeather((err, JSONObj) => {
         if (err) {
           reject(err);
         }
-        //console.log(JSONObj);
         resolve(JSONObj);
       });
     });
@@ -152,17 +148,17 @@ class App extends Component {
    * Get forecast data given zip code.
    *
    */
-  getForecast = zipCode => {
+  getForecast = () => {
     return new Promise((resolve, reject) => {
-      this.weather.getWeatherForecastForDays(this.weatherForecastDays, function(
-        err,
-        JSONObj
-      ) {
-        if (err) {
-          reject(err);
+      this.weatherApi.getWeatherForecastForDays(
+        this.weatherForecastDays,
+        (err, JSONObj) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(JSONObj);
         }
-        resolve(JSONObj);
-      });
+      );
     });
   };
 
@@ -173,7 +169,7 @@ class App extends Component {
   getCityName = (latitude, longitude) => {
     let options = {
       provider: "google",
-      apiKey: config.googleMapsApiKey
+      apiKey: config.googleMapsApiKey,
     };
 
     let NodeGeocoder = require("node-geocoder");
@@ -181,16 +177,16 @@ class App extends Component {
 
     return geocoder
       .reverse({ lat: latitude, lon: longitude })
-      .then(function(res) {
+      .then((res) => {
         // console.log("location:" + JSON.stringify(res, null, 2));
         return res;
       })
-      .catch(function(err) {
+      .catch((err) => {
         console.log(err);
       });
 
     // return new Promise((resolve, reject) =>{
-    //   geocoder.reverse({latitude, longitude}, function(err, res) {
+    //   geocoder.reverse({latitude, longitude}, (err, res) => {
     //     if(err) {
     //       reject(err);
     //     }
@@ -241,13 +237,14 @@ class App extends Component {
         </div>
       );
     }
-    return (
-      <div>
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-        </header>
-      </div>
-    );
+    return null;
+    // return (
+    //   <div>
+    //     <header className="App-header">
+    //       <img src={logo} className="App-logo" alt="logo" />
+    //     </header>
+    //   </div>
+    // );
   }
 }
 

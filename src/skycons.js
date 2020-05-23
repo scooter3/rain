@@ -1,6 +1,4 @@
-(function(global) {
-    "use strict";
-  
+(function(global) { 
     /* Set up a RequestAnimationFrame shim so we can animate efficiently FOR
      * GREAT JUSTICE. */
     var requestInterval, cancelInterval;

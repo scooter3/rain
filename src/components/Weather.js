@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Skycons } from ".././skycons";
-import moment from "moment";
 
 class Weather extends Component {
   constructor(props) {
@@ -84,14 +83,14 @@ class Weather extends Component {
     const { location, date, forecast } = this.props;
     let moment = require("moment");
 
-    forecast.list.forEach(element => {
+    forecast.list.forEach((element) => {
       this.forecastIcons.push(this.getWeatherType(element.weather[0].id));
     });
 
     return (
       <div className="Weather">
         <div id="mainWeatherArea">
-          <div class="weatherColumn">
+          <div className="weatherColumn">
             <div id="mainWeatherIconBox">
               <canvas
                 id="mainWeatherIcon"
@@ -102,7 +101,7 @@ class Weather extends Component {
             </div>
           </div>
 
-          <div class="weatherColumn">
+          <div className="weatherColumn">
             <div id="mainTemp">
               {Number.parseFloat(currentWeather.main.temp).toFixed(0)}&deg;
             </div>
@@ -114,7 +113,7 @@ class Weather extends Component {
             </div>
           </div>
 
-          <div class="weatherColumn">
+          <div className="weatherColumn">
             <div id="info">
               <div id="cityState">
                 {location.city}, {location.administrativeLevels.level1short}
@@ -146,11 +145,11 @@ class Weather extends Component {
           </div>
         </div>
 
-        {forecast.list.map(function(value, index) {
+        {forecast.list.map((value, index) => {
           return (
-            <div id="forecastTable">
-              <div class="forecastDay">{date.fiveDays[index]}</div>
-              <div class="forecastIcon">
+            <div id="forecastTable" key={index}>
+              <div className="forecastDay">{date.fiveDays[index]}</div>
+              <div className="forecastIcon">
                 <canvas
                   width="30"
                   height="30"
@@ -158,7 +157,7 @@ class Weather extends Component {
                   title={value.weather[0].main}
                 />
               </div>
-              <div class="forecastTemp">
+              <div className="forecastTemp">
                 {Number.parseFloat(value.temp.max).toFixed(0)}&deg; |{" "}
                 {Number.parseFloat(value.temp.min).toFixed(0)}&deg;
               </div>
@@ -172,7 +171,7 @@ class Weather extends Component {
 
 Weather.propTypes = {
   weather: PropTypes.object.isRequired,
-  forecast: PropTypes.object.isRequired
+  forecast: PropTypes.object.isRequired,
 };
 
 export default Weather;
