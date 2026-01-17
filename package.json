@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "net": "^1.0.2",
     "node-geocoder": "^3.22.0",
     "openweather-apis": "^4.0.0",
