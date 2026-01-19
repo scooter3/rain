@@ -5,7 +5,7 @@
   "dependencies": {
     "moment": "^2.24.0",
     "net": "^1.0.2",
-    "node-geocoder": "^3.22.0",
+    "node-geocoder": "^4.4.1",
     "openweather-apis": "^4.0.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
